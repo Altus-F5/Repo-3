@@ -20,7 +20,8 @@ What exists is real, complete source for a UE5 C++ project. What does not exist:
 - Blueprint assets (see "Why C++" below)
 
 Expect to fix some compile errors on first build. The code was read through by a
-second reviewer acting as a compiler, but that is not a compiler. Treat every
+second reviewer acting as a compiler (it found four definite errors, now fixed),
+but that is not a compiler. Treat every
 gameplay claim in this file as *intended behaviour*, and use
 [`TEST-CHECKLIST.md`](TEST-CHECKLIST.md) to find out what is true.
 
@@ -28,7 +29,7 @@ gameplay claim in this file as *intended behaviour*, and use
 
 | | |
 |---|---|
-| Engine | Unreal Engine **5.5** (`EngineAssociation` in `TheRing.uproject`). Written to compile on 5.4–5.6. For another version: right-click `TheRing.uproject` → *Switch Unreal Engine version*. |
+| Engine | Unreal Engine **5.8** (`EngineAssociation` in `TheRing.uproject`), matching the version this repository pins in `docs/engine-reference/unreal/VERSION.md`. The code sticks to long-standing APIs and was checked against that folder's 5.8 breaking-changes notes, but it was reviewed mainly with 5.4-5.6 in mind. For another version: right-click `TheRing.uproject` → *Switch Unreal Engine version*. |
 | Needs | Visual Studio 2022 with the *Game development with C++* workload (this is a C++ project; the editor must build it). |
 | Plugins | `EnhancedInput` (ships with the engine; enabled in the `.uproject`). Nothing else. |
 | Startup map | `/Engine/Maps/Entry` — the engine's empty map. The level is built in code when Play starts. |
@@ -49,7 +50,8 @@ gameplay claim in this file as *intended behaviour*, and use
 Unit tests for the pure rules: *Tools → Session Frontend → Automation*, filter `TheRing.Logic`.
 
 Packaging (*Platforms → Windows → Package Project*) is untried. `Config/DefaultGame.ini`
-lists the engine folders that must be cooked because meshes are loaded by path.
+lists the engine folders that must be cooked because meshes are loaded by path;
+if you create the optional materials, add `/Game/TheRing` there too (a comment marks the spot).
 
 ## Controls
 

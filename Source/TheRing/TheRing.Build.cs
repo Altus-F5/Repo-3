@@ -6,6 +6,9 @@ public class TheRing : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
+		// Lets Private/Tests include headers that sit in the module root.
+		PrivateIncludePaths.Add(ModuleDirectory);
+
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core",
@@ -13,7 +16,9 @@ public class TheRing : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"AudioMixer"
+			"AudioMixer",
+			"AudioExtensions",
+			"SignalProcessing"
 		});
 	}
 }

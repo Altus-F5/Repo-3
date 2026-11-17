@@ -14,7 +14,7 @@ namespace
 {
 	const FLinearColor Ink(0.92f, 0.92f, 0.90f, 1.f);
 	const FLinearColor Dim(0.70f, 0.70f, 0.68f, 1.f);
-	const FLinearColor Brass(0.95f, 0.78f, 0.45f, 1.f);
+	const FLinearColor BrassInk(0.95f, 0.78f, 0.45f, 1.f);
 	const FLinearColor Shade(0.f, 0.f, 0.f, 0.62f);
 	const float SubtitleScales[] = {1.25f, 1.6f, 2.1f};
 }
@@ -158,9 +158,9 @@ void ARingHUD::DrawGame(float W, float H, float UI)
 		if (Target && ScreenBounds(Target, X, Y, BW, BH))
 		{
 			const bool bBlocked = !Character->GetTargetBlockedReason().IsEmpty();
-			Brackets(X - 6.f, Y - 6.f, BW + 12.f, BH + 12.f, bBlocked ? Dim : Brass, bBlocked ? Line * 0.6f : Line);
+			Brackets(X - 6.f, Y - 6.f, BW + 12.f, BH + 12.f, bBlocked ? Dim : BrassInk, bBlocked ? Line * 0.6f : Line);
 			LabelCentred(bBlocked ? Target->GetDisplayName().ToUpper() + TEXT("  (CANNOT MOVE)") : Target->GetDisplayName().ToUpper(),
-				X + BW * 0.5f, FMath::Max(4.f, Y - 30.f * UI), 1.1f * UI, bBlocked ? Dim : Brass);
+				X + BW * 0.5f, FMath::Max(4.f, Y - 30.f * UI), 1.1f * UI, bBlocked ? Dim : BrassInk);
 		}
 		if (Held && ScreenBounds(Held, X, Y, BW, BH))
 		{
@@ -177,12 +177,12 @@ void ARingHUD::DrawGame(float W, float H, float UI)
 				const float SX = static_cast<float>(Screen.X);
 				const float SY = static_cast<float>(Screen.Y);
 				const float R = 14.f * UI;
-				DrawLine(SX, SY - R, SX + R, SY, Brass, Line);
-				DrawLine(SX + R, SY, SX, SY + R, Brass, Line);
-				DrawLine(SX, SY + R, SX - R, SY, Brass, Line);
-				DrawLine(SX - R, SY, SX, SY - R, Brass, Line);
+				DrawLine(SX, SY - R, SX + R, SY, BrassInk, Line);
+				DrawLine(SX + R, SY, SX, SY + R, BrassInk, Line);
+				DrawLine(SX, SY + R, SX - R, SY, BrassInk, Line);
+				DrawLine(SX - R, SY, SX, SY - R, BrassInk, Line);
 				const bool bReady = Held && Held->IsNearSnap();
-				LabelCentred(bReady ? TEXT("IN POSITION: LET GO TO SET") : TEXT("SUPPORT POSITION"), SX, SY + R + 6.f * UI, 1.1f * UI, bReady ? Ink : Brass);
+				LabelCentred(bReady ? TEXT("IN POSITION: LET GO TO SET") : TEXT("SUPPORT POSITION"), SX, SY + R + 6.f * UI, 1.1f * UI, bReady ? Ink : BrassInk);
 			}
 		}
 
@@ -195,8 +195,8 @@ void ARingHUD::DrawGame(float W, float H, float UI)
 			const int32 Segments = 16;
 			for (int32 Index = 0; Index < Segments; ++Index)
 			{
-				const float A0 = Index * 2.f * PI / Segments;
-				const float A1 = (Index + 1) * 2.f * PI / Segments;
+				const float A0 = Index * 2.f * UE_PI / Segments;
+				const float A1 = (Index + 1) * 2.f * UE_PI / Segments;
 				DrawLine(CX + FMath::Cos(A0) * R, CY + FMath::Sin(A0) * R, CX + FMath::Cos(A1) * R, CY + FMath::Sin(A1) * R, Ink, Line * 0.6f);
 			}
 			if (Held || (Target && Character->GetTargetBlockedReason().IsEmpty()))
@@ -217,7 +217,7 @@ void ARingHUD::DrawGame(float W, float H, float UI)
 		const float Scale = 1.25f * UI;
 		const FVector2D Size = Measure(GameMode->GetObjective(), Scale);
 		DrawRect(Shade, 28.f * UI, 26.f * UI, static_cast<float>(Size.X) + 28.f * UI, static_cast<float>(Size.Y) + 14.f * UI);
-		DrawRect(Brass, 28.f * UI, 26.f * UI, 4.f * UI, static_cast<float>(Size.Y) + 14.f * UI);
+		DrawRect(BrassInk, 28.f * UI, 26.f * UI, 4.f * UI, static_cast<float>(Size.Y) + 14.f * UI);
 		Label(GameMode->GetObjective(), 44.f * UI, 33.f * UI, Scale, Ink);
 	}
 
@@ -299,7 +299,7 @@ void ARingHUD::DrawMenu(float W, float H, float UI)
 
 	LabelCentred(Title, W * 0.5f, Y, TitleScale, Ink);
 	Y += static_cast<float>(Measure(Title, TitleScale).Y) + 12.f * UI;
-	DrawLine(W * 0.5f - 160.f * UI, Y, W * 0.5f + 160.f * UI, Y, Brass, 2.f * UI);
+	DrawLine(W * 0.5f - 160.f * UI, Y, W * 0.5f + 160.f * UI, Y, BrassInk, 2.f * UI);
 	Y += 26.f * UI;
 
 	for (int32 Index = 0; Index < Lines.Num(); ++Index)
@@ -312,7 +312,7 @@ void ARingHUD::DrawMenu(float W, float H, float UI)
 		{
 			const float BoxX = W * 0.5f - static_cast<float>(Size.X) * 0.5f - 16.f * UI;
 			DrawRect(FLinearColor(1.f, 1.f, 1.f, 0.08f), BoxX, Y - 5.f * UI, static_cast<float>(Size.X) + 32.f * UI, static_cast<float>(Size.Y) + 10.f * UI);
-			Frame(BoxX, Y - 5.f * UI, static_cast<float>(Size.X) + 32.f * UI, static_cast<float>(Size.Y) + 10.f * UI, Brass, 2.f * UI);
+			Frame(BoxX, Y - 5.f * UI, static_cast<float>(Size.X) + 32.f * UI, static_cast<float>(Size.Y) + 10.f * UI, BrassInk, 2.f * UI);
 		}
 		LabelCentred(Row, W * 0.5f, Y, RowScale, bSelected ? Ink : Dim);
 		Y += RowHeight;

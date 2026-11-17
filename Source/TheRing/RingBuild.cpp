@@ -27,7 +27,7 @@ namespace
 
 	UMaterialInterface* LoadQuiet(const TCHAR* Path)
 	{
-		return Cast<UMaterialInterface>(StaticLoadObject(UMaterialInterface::StaticClass(), nullptr, Path, nullptr, LOAD_NoWarn | LOAD_Quiet));
+		return Cast<UMaterialInterface>(StaticLoadObject(UMaterialInterface::StaticClass(), nullptr, Path, {}, LOAD_NoWarn | LOAD_Quiet));
 	}
 
 	UMaterialInterface* SurfaceMaterial()

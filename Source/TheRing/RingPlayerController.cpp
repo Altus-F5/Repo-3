@@ -263,10 +263,10 @@ void ARingPlayerController::ApplySettings()
 		return;
 	}
 	const FRingSettings& Settings = Instance->Settings;
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->SetReducedMotion(Settings.bReducedMotion);
-		if (URingSynthComponent* Synth = Character->GetSynth())
+		RingCharacter->SetReducedMotion(Settings.bReducedMotion);
+		if (URingSynthComponent* Synth = RingCharacter->GetSynth())
 		{
 			Synth->SetVolumes(Settings.MasterVolume, Settings.AmbienceVolume, Settings.EffectsVolume, Settings.VoiceVolume);
 		}
@@ -290,9 +290,9 @@ void ARingPlayerController::ApplySettings()
 
 void ARingPlayerController::OnMove(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->MoveInput(Value.Get<FVector2D>());
+		RingCharacter->MoveInput(Value.Get<FVector2D>());
 	}
 }
 
@@ -339,17 +339,17 @@ void ARingPlayerController::OnLookStick(const FInputActionValue& Value)
 
 void ARingPlayerController::OnBriskStarted(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->SetBrisk(true);
+		RingCharacter->SetBrisk(true);
 	}
 }
 
 void ARingPlayerController::OnBriskCompleted(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->SetBrisk(false);
+		RingCharacter->SetBrisk(false);
 	}
 }
 
@@ -367,23 +367,23 @@ void ARingPlayerController::OnInteract(const FInputActionValue& Value)
 
 void ARingPlayerController::OnFocusStarted(const FInputActionValue& Value)
 {
-	ARingCharacter* Character = GetRingCharacter();
+	ARingCharacter* RingCharacter = GetRingCharacter();
 	const URingGameInstance* Instance = GetGameInstance<URingGameInstance>();
-	if (!Character)
+	if (!RingCharacter)
 	{
 		return;
 	}
 	const bool bToggle = Instance && Instance->Settings.bAimToggle;
-	Character->SetFocusInput(bToggle ? !Character->GetFocusInput() : true);
+	RingCharacter->SetFocusInput(bToggle ? !RingCharacter->GetFocusInput() : true);
 }
 
 void ARingPlayerController::OnFocusCompleted(const FInputActionValue& Value)
 {
-	ARingCharacter* Character = GetRingCharacter();
+	ARingCharacter* RingCharacter = GetRingCharacter();
 	const URingGameInstance* Instance = GetGameInstance<URingGameInstance>();
-	if (Character && !(Instance && Instance->Settings.bAimToggle))
+	if (RingCharacter && !(Instance && Instance->Settings.bAimToggle))
 	{
-		Character->SetFocusInput(false);
+		RingCharacter->SetFocusInput(false);
 	}
 }
 
@@ -393,41 +393,41 @@ void ARingPlayerController::OnHold(const FInputActionValue& Value)
 	{
 		return;
 	}
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->ToggleHold();
+		RingCharacter->ToggleHold();
 	}
 }
 
 void ARingPlayerController::OnWheel(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->AdjustHoldDistance(Value.Get<float>());
+		RingCharacter->AdjustHoldDistance(Value.Get<float>());
 	}
 }
 
 void ARingPlayerController::OnNearer(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->AdjustHoldDistance(-ButtonDistanceRate * GetWorld()->GetDeltaSeconds());
+		RingCharacter->AdjustHoldDistance(-ButtonDistanceRate * GetWorld()->GetDeltaSeconds());
 	}
 }
 
 void ARingPlayerController::OnFarther(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->AdjustHoldDistance(ButtonDistanceRate * GetWorld()->GetDeltaSeconds());
+		RingCharacter->AdjustHoldDistance(ButtonDistanceRate * GetWorld()->GetDeltaSeconds());
 	}
 }
 
 void ARingPlayerController::OnShoulder(const FInputActionValue& Value)
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->SwapShoulder();
+		RingCharacter->SwapShoulder();
 	}
 }
 
@@ -438,9 +438,9 @@ void ARingPlayerController::OnShoulder(const FInputActionValue& Value)
 
 void ARingPlayerController::PlayClick()
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		if (URingSynthComponent* Synth = Character->GetSynth())
+		if (URingSynthComponent* Synth = RingCharacter->GetSynth())
 		{
 			Synth->TriggerClick();
 		}
@@ -462,12 +462,12 @@ void ARingPlayerController::CloseMenus()
 	{
 		Instance->SaveToDisk();
 		// A key released while paused is never reported, so clear held states.
-		if (ARingCharacter* Character = GetRingCharacter())
+		if (ARingCharacter* RingCharacter = GetRingCharacter())
 		{
-			Character->SetBrisk(false);
+			RingCharacter->SetBrisk(false);
 			if (!Instance->Settings.bAimToggle)
 			{
-				Character->SetFocusInput(false);
+				RingCharacter->SetFocusInput(false);
 			}
 		}
 	}
@@ -476,9 +476,9 @@ void ARingPlayerController::CloseMenus()
 
 void ARingPlayerController::ShowEndCard()
 {
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->ForceRelease();
+		RingCharacter->ForceRelease();
 	}
 	OpenMenu(ERingMenu::EndCard);
 }
@@ -640,9 +640,9 @@ void ARingPlayerController::AdjustOption(int32 Direction)
 	default: return;
 	}
 	ApplySettings();
-	if (ARingCharacter* Character = GetRingCharacter())
+	if (ARingCharacter* RingCharacter = GetRingCharacter())
 	{
-		Character->SetExposureBias(S.Brightness); // visible at once behind the menu
+		RingCharacter->SetExposureBias(S.Brightness); // visible at once behind the menu
 	}
 	PlayClick();
 }

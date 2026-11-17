@@ -25,12 +25,12 @@ namespace
 	const float HeadTurnDegrees = 85.f;
 	const float BodyTurnDegrees = 40.f;
 
-	float SideSign(int32 Side) { return Side == 0 ? -1.f : 1.f; }
+	float VoraikSideSign(int32 Side) { return Side == 0 ? -1.f : 1.f; }
 
 	/** Mirrors a right-side direction for the given side. */
 	FVector Mirror(const FVector& RightSide, int32 Side)
 	{
-		return FVector(RightSide.X, RightSide.Y * SideSign(Side), RightSide.Z);
+		return FVector(RightSide.X, RightSide.Y * VoraikSideSign(Side), RightSide.Z);
 	}
 }
 
@@ -65,7 +65,7 @@ void ARingVoraik::BuildBody()
 	// Legs: thin, armoured, ending in points. Mostly hidden by the cloak.
 	for (int32 Side = 0; Side < 2; ++Side)
 	{
-		const float Y = 14.f * SideSign(Side);
+		const float Y = 14.f * VoraikSideSign(Side);
 		FRingBuild::AddPart(this, Root, ERingShape::Cylinder, FVector(0, Y, 86), FVector(11, 11, 128), Armor);
 		FRingBuild::AddPart(this, Root, ERingShape::Cone, FVector(0, Y, 11), FVector(10, 10, 22), Armor, FRotator(180.f, 0.f, 0.f));
 		FRingBuild::AddPart(this, Root, ERingShape::Sphere, FVector(0, Y, 82), FVector(13, 13, 13), Collar); // knee joint
@@ -183,11 +183,11 @@ void ARingVoraik::ApplyPose(float DeltaSeconds)
 	const float U = -WaistHeight;
 	for (int32 Side = 0; Side < 2; ++Side)
 	{
-		const float Sign = SideSign(Side);
+		const float Sign = VoraikSideSign(Side);
 		FVector UpperDir = FMath::Lerp(NeutralUpper, PrayUpper, Pray);
 		FVector LowerDir = FMath::Lerp(NeutralLower, PrayLower, Pray);
 		// Halfway through the lowering the arms pass outward, not through the body.
-		const float Mid = FMath::Sin(Pray * PI);
+		const float Mid = FMath::Sin(Pray * UE_PI);
 		UpperDir.Y += 0.45 * Mid;
 		LowerDir.Y += 0.25 * Mid;
 		UpperDir = Mirror(UpperDir.GetSafeNormal(), Side);
@@ -219,7 +219,7 @@ void ARingVoraik::ApplyPose(float DeltaSeconds)
 	FVector RightHandWorld = FVector::ZeroVector;
 	for (int32 Side = 0; Side < 2; ++Side)
 	{
-		const float Sign = SideSign(Side);
+		const float Sign = VoraikSideSign(Side);
 		const float SideReach = Side == 1 ? Reach : 0.f;
 		const FVector UpperDir = Mirror(FMath::Lerp(FoldUpper, ReachUpper, SideReach).GetSafeNormal(), Side);
 		const FVector LowerDir = Mirror(FMath::Lerp(FoldLower, ReachLower, SideReach).GetSafeNormal(), Side);

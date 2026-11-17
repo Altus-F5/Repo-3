@@ -984,7 +984,7 @@ void ARingGameMode::UpdatePrompt(const FVector& PlayerLocation)
 		}
 		else if (Held->IsTrack())
 		{
-			Prompt = TEXT("Look along the track to slide it   |   Left mouse: let go");
+			Prompt = TEXT("Look or walk along the track to slide it   |   Left mouse: let go");
 		}
 		else
 		{

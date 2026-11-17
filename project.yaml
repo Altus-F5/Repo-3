@@ -29,5 +29,5 @@ framework:
 # Set for THE RING demo (UE5 C++ project at the repo root: TheRing.uproject).
 engine:
   name: Unreal
-  version: "5.5"
+  version: "5.8"
   language: C++

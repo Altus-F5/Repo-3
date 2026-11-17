@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.5",
+	"EngineAssociation": "5.8",
 	"Category": "",
 	"Description": "THE RING (working title) - playable opening-scene demo. Level, characters and audio are generated in C++ at runtime.",
 	"Modules": [

@@ -13,7 +13,7 @@ namespace
 	/** Largest single collision-checked step, cm. Smaller than the thinnest wall in the level. */
 	const float MaxStep = 6.f;
 	/** The collision box is this much smaller per side than the object, so resting contact is not a hit. */
-	const float Skin = 1.f;
+	const float CollisionSkin = 1.f;
 	const float Gravity = 980.f;
 	/** A landing faster than this is audible and raises dust. */
 	const float ImpactSpeed = 120.f;
@@ -194,7 +194,7 @@ bool ARingTKObject::IsSpaceFree(const FVector& Location) const
 		return false;
 	}
 	FCollisionQueryParams Params(FName(TEXT("RingTKMove")), false, this);
-	const FVector HalfExtent = (SizeCm * 0.5 - FVector(Skin)).ComponentMax(FVector(0.5));
+	const FVector HalfExtent = (SizeCm * 0.5 - FVector(CollisionSkin)).ComponentMax(FVector(0.5));
 	return !World->OverlapBlockingTestByChannel(Location, GetActorQuat(), ECC_WorldDynamic, FCollisionShape::MakeBox(HalfExtent), Params);
 }
 
@@ -213,7 +213,7 @@ bool ARingTKObject::WouldHitPawn(const FVector& Location) const
 float ARingTKObject::MoveChecked(const FVector& Delta)
 {
 	const float Distance = Delta.Size();
-	if (Distance < KINDA_SMALL_NUMBER)
+	if (Distance < UE_KINDA_SMALL_NUMBER)
 	{
 		return 0.f;
 	}

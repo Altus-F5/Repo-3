@@ -149,8 +149,8 @@ void URingBodyComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 	MoveAlpha = FMath::FInterpTo(MoveAlpha, DrivenSpeed > 10.f ? 1.f : 0.f, DeltaTime, 8.f);
 	PowerAlpha = FMath::FInterpTo(PowerAlpha, PowerTarget, DeltaTime, 6.f);
-	Phase += (DrivenSpeed / StrideLength) * PI * DeltaTime;
-	StepCount = FMath::FloorToInt(Phase / PI);
+	Phase += (DrivenSpeed / StrideLength) * UE_PI * DeltaTime;
+	StepCount = FMath::FloorToInt(Phase / UE_PI);
 
 	const float Swing = MoveAlpha * FMath::Lerp(0.36f, 0.60f, FMath::Clamp((DrivenSpeed - 150.f) / 250.f, 0.f, 1.f));
 	const float Sine = FMath::Sin(Phase);
